@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TaskGraph from "./TaskGraph";
+import MapComponent from "./MapComponent";
 
 export default function Dashboard({ username, role, onLogout }) {
   const [page, setPage] = useState("home");
@@ -10,6 +11,10 @@ export default function Dashboard({ username, role, onLogout }) {
   const [newTask, setNewTask] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
+  
+  // Vordefinierte Start- und Endpunkte
+  const fixedStartPoint = "Berlin, Deutschland";
+  const fixedEndPoint = "München, Deutschland";
 
   return (    <div className={
       `min-h-screen flex flex-col transition-colors duration-300 ` +
@@ -22,7 +27,7 @@ export default function Dashboard({ username, role, onLogout }) {
       }>
         {/* Mobiles Menü & Logo */}
         <div className="flex items-center">
-          <h1 className={`text-lg font-bold ${darkMode ? "text-primary-400" : "text-primary-700"}`}>TaskBoard</h1>
+          <h1 className={`text-lg font-bold ${darkMode ? "text-primary-400" : "text-primary-700"}`}>Task Manager</h1>
         </div>
 
         {/* Zentrale Buttons */}
@@ -31,14 +36,13 @@ export default function Dashboard({ username, role, onLogout }) {
             onClick={() => setPage("home")}
           >
             Home
-          </button>
-          <button
+          </button>          <button
             className={`font-semibold transition-colors duration-300 ${page === "faq" ? (darkMode ? "text-primary-400" : "text-primary-700") : (darkMode ? "text-dark-text-secondary" : "text-light-text-secondary")}`}
             onClick={() => setPage("faq")}
           >
             FAQ
           </button>
-          {/* Admin sieht "Skills" */}          {role === "admin" && (
+          {/* Admin sieht "Skills" */}{role === "admin" && (
             <button
               className={`font-semibold transition-colors duration-300 ${page === "skills" ? (darkMode ? "text-primary-400" : "text-primary-700") : (darkMode ? "text-dark-text-secondary" : "text-light-text-secondary")}`}
               onClick={() => setPage("skills")}
@@ -62,7 +66,15 @@ export default function Dashboard({ username, role, onLogout }) {
               onClick={() => setPage("test")}
             >
               Testbereich
-            </button>          )}</div>
+            </button>          )}
+          {/* Karte Button */}
+          <button
+            className={`font-semibold transition-colors duration-300 ${page === "karte" ? (darkMode ? "text-primary-400" : "text-primary-700") : (darkMode ? "text-dark-text-secondary" : "text-light-text-secondary")}`}
+            onClick={() => setPage("karte")}
+          >
+            Karte
+          </button>
+        </div>
         {/* Rechte Seite mit Dark Mode Toggle und Logout */}
         <div className="flex items-center gap-2 sm:gap-3 order-2 sm:order-3">          {/* Darkmode Toggle */}          <button
             className={
@@ -172,8 +184,23 @@ export default function Dashboard({ username, role, onLogout }) {
                     ? "bg-dark-surface border border-dark-border" 
                     : "bg-light-bg"
                 }`}>
-                  <h3 className={`font-semibold mb-4 ${darkMode ? "text-primary-400" : "text-primary-700"}`}>Aufgabenübersicht</h3>
-                  <TaskGraph tasks={tasks} darkMode={darkMode} />
+                  <h3 className={`font-semibold mb-4 ${darkMode ? "text-primary-400" : "text-primary-700"}`}>Aufgabenübersicht</h3>                  <TaskGraph tasks={tasks} darkMode={darkMode} />
+                </div>              </div>
+              
+              {/* Routenplaner im Home-Bildschirm */}
+              <div className={`mt-8 p-4 sm:p-6 rounded-2xl shadow-xl w-full transition-colors duration-300 ${
+                darkMode 
+                  ? "bg-dark-surface border border-dark-border" 
+                  : "bg-light-bg"
+              }`}>
+                <h2 className={`text-lg sm:text-xl font-semibold mb-3 ${darkMode ? "text-primary-400" : "text-primary-700"}`}>Nächste Route</h2>
+                <div className="h-[350px]">
+                  <MapComponent 
+                    darkMode={darkMode} 
+                    fixedStartPoint={fixedStartPoint} 
+                    fixedEndPoint={fixedEndPoint}
+                    compact={true}
+                  />
                 </div>
               </div>
             </>
@@ -215,6 +242,17 @@ export default function Dashboard({ username, role, onLogout }) {
             }`}>
               <h1 className={`text-xl sm:text-2xl font-bold mb-4 ${darkMode ? "text-primary-400" : "text-primary-700"}`}>Testbereich</h1>
               <p className={darkMode ? "text-dark-text-secondary" : "text-light-text-secondary"}>Nur Gäste sehen diesen Bereich.</p>
+            </div>
+          )}
+          {page === "karte" && (
+            <div className={`p-4 sm:p-8 rounded-2xl shadow-xl transition-colors duration-300 ${
+              darkMode 
+                ? "bg-dark-surface border border-dark-border" 
+                : "bg-light-bg"
+            }`}>
+              <h1 className={`text-xl sm:text-2xl font-bold mb-4 ${darkMode ? "text-primary-400" : "text-primary-700"}`}>Karte</h1>
+              <p className={darkMode ? "text-dark-text-secondary" : "text-light-text-secondary"}>Hier ist die Karte.</p>
+              <MapComponent />
             </div>
           )}
         </div>
