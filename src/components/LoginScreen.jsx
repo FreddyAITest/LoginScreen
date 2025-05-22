@@ -9,14 +9,14 @@ export default function LoginScreen({
   onLogin,
 }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-blue-50 to-primary-100 px-4 py-8">
       <form
-        className="bg-white p-8 rounded-2xl shadow-xl w-96 flex flex-col gap-4"
+        className="bg-light-bg p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-sm flex flex-col gap-4"
         onSubmit={onLogin}
       >
-        <h2 className="text-2xl font-bold mb-2 text-center">Login</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mb-2 text-center text-primary-700">Task Manager</h2>
         <input
-          className="border p-2 rounded-xl"
+          className="border border-light-border p-2 rounded-xl focus:ring-2 focus:ring-primary-400 outline-none"
           type="text"
           placeholder="Benutzername"
           value={username}
@@ -24,7 +24,7 @@ export default function LoginScreen({
           required
         />
         <input
-          className="border p-2 rounded-xl"
+          className="border border-light-border p-2 rounded-xl focus:ring-2 focus:ring-primary-400 outline-none"
           type="password"
           placeholder="Passwort"
           value={password}
@@ -33,7 +33,7 @@ export default function LoginScreen({
         />
         {error && <div className="text-red-500 text-sm">{error}</div>}
         <button
-          className="bg-blue-600 text-white rounded-xl p-2 mt-2 hover:bg-blue-700 transition"
+          className="bg-primary-600 text-white rounded-xl p-3 mt-2 hover:bg-primary-700 transition-colors duration-300"
           type="submit"
         >
           Einloggen
